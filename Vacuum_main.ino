@@ -63,12 +63,33 @@ void coaststop(){
   motor2Moving = false;
 }
 
+void motor1Forward() {
+  digitalWrite(motor1In1, HIGH);
+  digitalWrite(motor1In2, LOW);
+}
+
+void motor1Reverse() {
+  digitalWrite(motor1In1, LOW);
+  digitalWrite(motor1In2, HIGH);
+}
+
+void motor2Forward() {
+  digitalWrite(motor2In1, HIGH);
+  digitalWrite(motor2In2, LOW);
+}
+
+void motor2Reverse() {
+  digitalWrite(motor2In1, LOW);
+  digitalWrite(motor2In2, HIGH);
+}
+
 void ultradistance(){
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
+  int count = 0;
 
   // Timeout after 30 ms, about 5 m maximum
   unsigned long duration = pulseIn(echoPin, HIGH, 30000);
@@ -80,7 +101,16 @@ void ultradistance(){
     Serial.print("Distance: ");
     Serial.print(distanceCm);
     Serial.println(" cm");
-
+    if(distanceCm<5){
+      //turn right then if obstacle turn left
+      motor1Reverse();
+      motor2Reverse();
+      delay(500);
+      motor1Forward();
+      motor2Reverse();
+      delay(500);
+      count++;
+    }
   }
 
   delay(100);
@@ -149,7 +179,8 @@ void loop() {
   }
 
   forward();
-
+  ultradistance();
+  
   noInterrupts();
   long currentCount1 = encoderCount1;
   long currentCount2 = encoderCount2;
