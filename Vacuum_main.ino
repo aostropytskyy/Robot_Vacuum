@@ -28,6 +28,7 @@ const long ticksPerTurn = 194;
 bool motor1Moving = false;
 bool motor2Moving = false;
 
+
 void IRAM_ATTR onEncoderA() {
   if (digitalRead(encoderA) == digitalRead(encoderB)) {
     encoderCount1++;
@@ -105,10 +106,15 @@ void ultradistance(){
       //turn right then if obstacle turn left
       motor1Reverse();
       motor2Reverse();
-      delay(500);
+      delay(500);//will need changed to 90 d
       motor1Forward();
       motor2Reverse();
-      delay(500);
+      delay(500);//will need changed to 90 d
+      if(count>2){
+        motor1Reverse();
+        motor2Forward();
+        delay(500); //will need changed to 90 d
+      }
       count++;
     }
   }
@@ -180,7 +186,7 @@ void loop() {
 
   forward();
   ultradistance();
-  
+
   noInterrupts();
   long currentCount1 = encoderCount1;
   long currentCount2 = encoderCount2;
