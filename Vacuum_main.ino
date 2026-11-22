@@ -80,9 +80,28 @@ void ultradistance(){
     Serial.print("Distance: ");
     Serial.print(distanceCm);
     Serial.println(" cm");
+
   }
 
   delay(100);
+}
+
+void gyro_accel(){
+  sensors_event_t accel, gyro, temperature;
+  mpu.getEvent(&accel, &gyro, &temperature);
+
+  Serial.print("Accel (m/s^2): ");
+  Serial.print(accel.acceleration.x); Serial.print(", ");
+  Serial.print(accel.acceleration.y); Serial.print(", ");
+  Serial.println(accel.acceleration.z);
+
+  Serial.print("Gyro (rad/s): ");
+  Serial.print(gyro.gyro.x); Serial.print(", ");
+  Serial.print(gyro.gyro.y); Serial.print(", ");
+  Serial.println(gyro.gyro.z);
+
+  Serial.println();
+  delay(250);
 }
 
 void setup() {
